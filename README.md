@@ -1,90 +1,66 @@
-# Testuji 
+# Automatic Translation fro CZECH
 
+# 11.03.2022
+- **MULTI HOTEND**
 
-11.3.2022
+Se viene utilizzato un hotend di tipo 2 IN 1 OUT (o xx IN 1 OUT), viene eseguita la sostituzione automatica del filamento al di fuori dell'area di stampa.
+Per impostazione predefinita, il punto di sostituzione è impostato sulla posizione del finecorsa + 20 mmm. Testato anche su IDEX.
+La variabile per il filamento attualmente installato viene salvata sulla scheda SD, quindi all'accensione della stampante viene impostata l'ultima configurazione.
+La macro è qui: MULTI_HOTEND.cfg
+Questa macro viene richiamata automaticamente dalla macro : [SETTINGS_TOOL]
+Per stampanti con sistema IDEX dalla macro: [ACTIVATE_CARRIAGE]
 
-- **MULTI HOTEND** 
+# 14/01/2023
+- **ENDLESS Spool** - bobina senza fine (utile come modalità di backup)
 
- Pokud je použit hotend typu 2 IN 1 OUT ( nebo xx IN 1 OUT), je provedena 
+Se la fine del filamento viene rilevata utilizzando un sensore (interruttore o movimento), verrà eseguita la sostituzione con un estrusor che ha un filamento.
+Allo stesso tempo, tutti i codici G di stampa Tx vengono indirizzati al nuovo estrusore, inclusi M104 / M109.
+La regola per la sostituzione dell'estrusore è la seguente: estrusore > estrusore1 > estrusore2 > estrusore3 > ecc.
+Viene utilizzato il primo estrusore che ha un filamento rilevato.
+La macro è qui: [ENDLESS_SPOOL_macro.cfg]
 
- automatická výměna filamentu mimo tiskovou ploxchu.
+# 26.12.2022
+- **DUAL GANTRY** (doppio portale) - nuova cinematica  **`dualgantry_cartesian`** 
+Si tratta di un tipo di cinematica per due teste portautensili che si muovono utilizzando due assi XY completamente indipendenti.
+La macro è qui:[ACTIVATE_dual_gantry.cfg](https://github.com/DrumClock/my_config/blob/main/DUAL_GANTRY/ACTIVATE_dual_gantry.cfg)
+Video di prova su: [Virtual Printer](https://youtu.be/5AJfQ59xB38)
 
- Defaultne je to nasaveno na pozici endstopu + 20 mmm. Otestováno i na IDEX.
- 
- Proměnná pro aktualně zavedený filament se ukládá na SD kartu, takže po zapnutí tiskárny
- 
- je nastavena poslední kofigurace.
+# Informazioni
 
- Makro je zde: [MULTI_HOTEND.cfg](https://github.com/DrumClock/my_config/blob/main/MULTI/MULTI_HOTEND.cfg)
+Tutte le cartelle e i file elencati sono archiviati in Raspberry qui: **`/home/pi/my_config/`**
+Per visualizzare la cartella **`my_config`** nell'interfaccia **Mainsail**, è necessario creare un "soft-link" utilizzando:
+**` ln -s /home/pi/my_config /home/pi/xxx/my_config `**   (xxx - directory con cfg, ad esempio klipper_config)
 
- Toto makro je automaticky voláné z makra : SETINGS_TOOL
- 
- Pro tiskárny na systemu IDEX z makra : ACTIVATE_CARRIAGE 
- 
- #
+# Le macro sono universali per queste configurazioni
 
-14.1.2023
+- single carriage da 2 a 4 estrusori
+- dual carriage (IDEX) da 2 a 4 estrusori
 
-- **ENDLESS SPOOL** - nekonečná cívka (označovaný jako **Backup mode** )
+Descrizione delle directory:
 
- Pokud je detekován konec filamentu pomocí sensoru (switch nebo motion), dojde k výměně za extruder který má filament.
-  
- Zároveň jsou všechny tiskové G-cody  **`Tx`** směrovány na nový extruder a to včetně  **`M104 / M109`**.
- 
- Proavidlo pro náhradu extruderu je následující:  **extruder > extruder1 > extruder2 > extruder3 > etc**
- 
- První extruder který má detekovaný filament se použije.
- 
- Makro je zde: [ENDLESS_SPOOL_macro.cfg](https://github.com/DrumClock/my_config/blob/main/MACRO/ENDLESS_SPOOL_macro.cfg)
-  
+**Klipper non è ancora supportato: i moduli per i test sono stati forniti da Tircown**
+
+- **`IDEX`**          - Mod M605 - DUPLICATION e MIRRORED 
+- **`4EX2`**          - Estensione IDEX mod M605 per 4 extrusori (Stampa Bicolore DUPLICATION e MIRRORED)
+- **`DUAL_GANTRY`**   - Doppio carrello X/Y  
 #
-
-26.12.2022
-
-- **DUAL GANTRY** (dvojitý portál) - nová kinematika  **`dualgantry_cartesian`** 
-
- Je typ kinematiky pro dvě nástrojové hlavy, které se pohybují pomocí dvou zcela nezávislých os XY.
-  
- Makro je zde: [ACTIVATE_dual_gantry.cfg](https://github.com/DrumClock/my_config/blob/main/DUAL_GANTRY/ACTIVATE_dual_gantry.cfg)
-    
- Video testu na: [Virtual Printer](https://youtu.be/5AJfQ59xB38)
-
-# Informace
-
-Všechny uvedené složky a soubory jsou v Raspberry uložené zde:  **`/home/pi/my_config/`**
-
-Pro zobrazení složky **`my_config`** v rozhranní **Mainsail** je nutné vytvořit "soft-link" pomocí:
-
-**` ln -s /home/pi/my_config /home/pi/xxx/my_config `**   (xxx - adresář s cfg např. klipper_config)
-
-# Makra jsou univerzální pro tyto konfigurace
-
-- single carriage pro 2 až 4 extrudery
-- dual carriige (IDEX) pro 2 až 4 extrudery
-
-# Popis adresářů:
-**Klipper zatím nepodoruje - moduly pro testování poskytl Tircown**
-- **`IDEX`**          - M605 mody - DUPLICATION a MIRRORED 
-- **`4EX2`**          - rozšíření IDEX modu M605 pro 4 extrudery (dvoubarevný tisk DUPLICATION a MIRRORED)
-- **`DUAL_GANTRY`**   - dvojitý portál X/Y  
+- **`SWITCHING`**      - macro per la sostituzione dell'Estrusore o dell'Hotend  
+- **`MULTI`**          - macro per HOTENDS MULTIPLI tipo 2 IN 1 OUT
 #
-- **`SWITCHING`**      - makro pro SWITCHING EXTRUDER / HOTEND  
-- **`MULTI`**          - makro pro MULTI-HOTENDY typi 2 IN 1 OUT
-#
-- **`MAIN`**          - základní univerzální makra pro 2-4 extrudery 
-- **`MACRO`**         - rozšířená univerzální makra  
-- **`MCU`**           - HW konfigurace MCU desek
+- **`MAIN`**          - macro universali di base per 2-4 estrusori
+- **`MACRO`**         - macro universali estese 
+- **`MCU`**           - Configurazione HW delle schede MCU
 - **`PRINTER`**       - definice druhu tiskárny pro testy
-- **`TEST`**          - testovací makra
+- **`TEST`**          - definizione del tipo di stampante per i test
 #
-- **`LCD`**           - HW konfigurace pro LCD nebo OLED displeje 
-- **`MENU`**          - menu obrazovky pro displeje
+- **`LCD`**           - Configurazione HW per display LCD o OLED
+- **`MENU`**          - menu dello schermo per i display 
 #
-**ve vývoji maker**
+**nello sviluppo delle macro**
 - **`P_L_R`**         - mod POWER LOSS RECOVERY  
 - **`W_T`**           - mod WIPE TOWER 
 
-# Jednotlivá makra se načítají pomocí [include ...] např.
+# Le singole macro vengono caricate utilizzando [include ...] ad esempio:
 
 ```
 ### MCU configurations  ###
@@ -109,8 +85,9 @@ Pro zobrazení složky **`my_config`** v rozhranní **Mainsail** je nutné vytvo
 [include /home/pi/my_config/4EX2/*]
 ```
 
-# Proměnné pro makra se vytvoří pomocí RUN_MACRO_INIT 
-spuštěného v [delayed_gcode _INIT] z konfigurace tiskárny a to po restartu FW např.
+# Le variabili per le macro vengono create utilizzando [RUN_MACRO_INIT ]
+
+avviato in [delayed_gcode _INIT] dalla configurazione della stampante dopo aver riavviato il firmware, ad es.
 
 ```
 printer['gcode_macro VARIABLE'].aaa = {'printer': '4EX2'}
